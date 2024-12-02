@@ -40,37 +40,58 @@ int main()
 // My code
 double extractNumeric(const string &str)
 {
+    double value = 0.0;
+    double decimalPlace = 0.1;
+    bool isNegative = false;
+    bool isDecimal = false;
 
-    double value = 0;
-
-    // Test for empty string
+    // Test for string greater than 20 characters or empty string
     if (str.length() == 0 or str.length() > 20)
     {
         return -999999.99;
     }
 
-    // Test for invalid characters
     for (int i = 0; i < str.length(); i++)
     {
-        // If the character is not a digit and isn't a plus or minus (at the beginning)
-        if (!isdigit(str[i]) && ((i != 0)))
+        char c = str[i];
+
+        // Handle positive/negative
+        if (i == 0 && (c == '-' || c == '+'))
         {
-            value = -999999.99;
+            if (c == '-')
+            {
+                isNegative = true;
+            }
         }
-        // If the character is a plus or minus at the beginning
-        else if (!isdigit(str[i]) && ((i == 0)))
+        // Handle decimal points
+        else if (c == '.')
         {
-            if (str[i] == '-')
+            // Checks for extra decimal point
+            if (isDecimal)
             {
-                value = -1;
+                return -999999.99;
             }
-            else if (str[i] == '+')
+            isDecimal = true;
+        }
+        // Handle number digits
+        else if (isdigit(c))
+        {
+            if (!isDecimal)
             {
-                value = 1;
+                value = value * 10 + (c - '0');
             }
+            else
+            {
+                value += (c - '0') * decimalPlace;
+                decimalPlace *= 0.1;
+            }
+        }
+        else
+        {
+            return -999999.99;
         }
     }
 
-    // Return the input as a double
-    return value;
+    // return the value with a negative if applicable
+    return isNegative ? -value : value;
 }
