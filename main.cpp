@@ -24,9 +24,12 @@ int main()
 
         double number = extractNumeric(input);
 
-        if (number != -999999.99) {
+        if (number != -999999.99)
+        {
             cout << "The input is: " << fixed << setprecision(4) << number << endl;
-        } else {
+        }
+        else
+        {
             cout << "The input is invalid." << endl;
         }
     }
@@ -35,6 +38,39 @@ int main()
 }
 
 // My code
-double extractNumeric(const string &str) {
-    return 1;
+double extractNumeric(const string &str)
+{
+
+    double value = 0;
+
+    // Test for empty string
+    if (str.length() == 0 or str.length() > 20)
+    {
+        return -999999.99;
+    }
+
+    // Test for invalid characters
+    for (int i = 0; i < str.length(); i++)
+    {
+        // If the character is not a digit and isn't a plus or minus (at the beginning)
+        if (!isdigit(str[i]) && ((i != 0)))
+        {
+            value = -999999.99;
+        }
+        // If the character is a plus or minus at the beginning
+        else if (!isdigit(str[i]) && ((i == 0)))
+        {
+            if (str[i] == '-')
+            {
+                value = -1;
+            }
+            else if (str[i] == '+')
+            {
+                value = 1;
+            }
+        }
+    }
+
+    // Return the input as a double
+    return value;
 }
