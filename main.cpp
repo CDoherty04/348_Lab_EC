@@ -51,6 +51,12 @@ double extractNumeric(const string &str)
         return -999999.99;
     }
 
+    // Test for string only containing sign
+    if (str.length() == 1 && !isdigit(str[0]))
+    {
+        return -999999.99;
+    }
+
     for (int i = 0; i < str.length(); i++)
     {
         char c = str[i];
